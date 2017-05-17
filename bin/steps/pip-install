@@ -2,7 +2,10 @@
 puts-step "Installing requirements with pip"
 
 set +e
-/app/.heroku/python/bin/pip install -r $BUILD_DIR/requirements.txt --exists-action=w --src=/app/.heroku/src --disable-pip-version-check --no-cache-dir 2>&1 | tee $WARNINGS_LOG | cleanup | indent
+
+GEMFURY_URL=$(cat $ENV_DIR/GEMFURY_URL)"
+
+/app/.heroku/python/bin/pip install -r $BUILD_DIR/requirements.txt --extra-index-url=$GEMFURY_URL --exists-action=w --src=/app/.heroku/src --disable-pip-version-check --no-cache-dir 2>&1 | tee $WARNINGS_LOG | cleanup | indent
 PIP_STATUS="${PIPESTATUS[0]}"
 set -e
 
